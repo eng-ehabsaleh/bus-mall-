@@ -15,9 +15,11 @@ let thirdimg = document.createElement("img");
 thirdimg.id = "third-img";
 section.appendChild(thirdimg);
 thirdimg.setAttribute("src", "");
-
+let uniq = [];
 const attemptmax = 25;
-
+let arrOfNames = [];
+let arrOfVotes = [];
+let arrOfShown = [];
 let counter = 0;
 Catalog.arrays = [];
 
@@ -28,6 +30,7 @@ function Catalog(name, source) {
   this.shown = 0;
   Catalog.arrays.push(this);
   // console.log(this);
+  arrOfNames.push(this.name);
 }
 
 new Catalog("bag", "img/bag.jpg"); //0
@@ -74,8 +77,11 @@ function renderthreeimages() {
   // console.log(second);
   // console.log(third);
   firstimg.src = Catalog.arrays[first].source;
+  // uniq.push(first);
   secondimg.src = Catalog.arrays[second].source;
+  // uniq.push(second);
   thirdimg.src = Catalog.arrays[third].source;
+  // uniq.push(third);
 
   Catalog.arrays[first].shown++;
   Catalog.arrays[second].shown++;
@@ -90,6 +96,35 @@ section.addEventListener("click", handler);
 let button;
 function handler(event) {
   counter++;
+  if (
+    uniq[length - 3] === first ||
+    uniq[length - 2] === first ||
+    uniq[length - 1] === first
+  ) {
+    // console.log("before", first);
+    first = generaterandomnumber();
+  }
+  // uniq.push(first);
+  if (
+    uniq[length - 3] === second ||
+    uniq[length - 2] === second ||
+    uniq[length - 1] === second
+  ) {
+    // console.log("befoe", second);
+    second = generaterandomnumber();
+  }
+  // uniq.push(second);
+  if (
+    uniq[length - 3] === third ||
+    uniq[length - 2] === third ||
+    uniq[length - 1] === third
+  ) {
+    // console.log("before", third);
+    third = generaterandomnumber();
+  }
+  uniq.push(first, second, third);
+  // }
+  console.log(uniq);
   if (counter <= attemptmax) {
     if (event.target.id === "first-img") {
       Catalog.arrays[first].votes++;
@@ -101,8 +136,14 @@ function handler(event) {
       counter--;
       return;
     }
-    console.log(counter);
-    console.log(event.target.id);
+    // console.log(counter);
+    // console.log(event.target.id);
+
+    // for (let i = uniq.length - 3; i <= uniq.length; i++) {
+    //   if (i < 0) {
+    //     i = 0;
+    //   }
+
     renderthreeimages();
   } else {
     let khabi = document.getElementById("khabi");
@@ -113,19 +154,81 @@ function handler(event) {
     khabi.appendChild(button);
     button.setAttribute("content", "test value");
     button.textContent = "view result";
-    section.removeEventListener("click", handler);
     button.addEventListener("click", handelclick);
+    section.removeEventListener("click", handler);
   }
 }
 
 function handelclick() {
   let tableElement = document.getElementById("table");
   for (let i = 0; i < Catalog.arrays.length; i++) {
+    arrOfVotes.push(Catalog.arrays[i].votes);
+    arrOfShown.push(Catalog.arrays[i].shown);
     let trelement = document.createElement("tr");
     tableElement.appendChild(trelement);
     trelement.textContent = `${Catalog.arrays[i].name} has this number of votes ${Catalog.arrays[i].votes} and shwon ${Catalog.arrays[i].shown} times `;
   }
-  section.removeEventListener("click", handler);
   button.removeEventListener("click", handelclick);
-  button.removeEventListener("click", handler);
+  gettingchart();
+}
+
+function gettingchart() {
+  var ctx = document.getElementById("myChart");
+  var myChart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: arrOfNames,
+      datasets: [
+        {
+          label: "# of Votes",
+          data: arrOfVotes,
+          backgroundColor: [
+            "rgba(255, 99, 132, 0.2)",
+            "rgba(54, 162, 235, 0.2)",
+            "rgba(255, 206, 86, 0.2)",
+            "rgba(75, 192, 192, 0.2)",
+            "rgba(153, 102, 255, 0.2)",
+            "rgba(255, 159, 64, 0.2)",
+          ],
+          borderColor: [
+            "rgba(255, 99, 132, 1)",
+            "rgba(54, 162, 235, 1)",
+            "rgba(255, 206, 86, 1)",
+            "rgba(75, 192, 192, 1)",
+            "rgba(153, 102, 255, 1)",
+            "rgba(255, 159, 64, 1)",
+          ],
+          borderWidth: 1,
+        },
+        {
+          label: "# of shown",
+          data: arrOfShown,
+          backgroundColor: [
+            "rgba(255, 99, 132, 0.2)",
+            "rgba(54, 162, 235, 0.2)",
+            "rgba(255, 206, 86, 0.2)",
+            "rgba(75, 192, 192, 0.2)",
+            "rgba(153, 102, 255, 0.2)",
+            "rgba(255, 159, 64, 0.2)",
+          ],
+          borderColor: [
+            "rgba(255, 99, 132, 1)",
+            "rgba(54, 162, 235, 1)",
+            "rgba(255, 206, 86, 1)",
+            "rgba(75, 192, 192, 1)",
+            "rgba(153, 102, 255, 1)",
+            "rgba(255, 159, 64, 1)",
+          ],
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    },
+  });
 }
