@@ -73,9 +73,28 @@ function renderthreeimages() {
       second = generaterandomnumber();
     }
   }
+  while (
+    uniq[length - 3] === first ||
+    uniq[length - 2] === first ||
+    uniq[length - 1] === first ||
+    uniq[length - 3] === second ||
+    uniq[length - 2] === second ||
+    uniq[length - 1] === second ||
+    uniq[length - 3] === third ||
+    uniq[length - 2] === third ||
+    uniq[length - 1] === third
+  ) {
+    // console.log("befor", first, second, third);
+    first = generaterandomnumber();
+    second = generaterandomnumber();
+    third = generaterandomnumber();
+    // uniq.push(first, second, third);
+  }
+
   // console.log(first);
   // console.log(second);
   // console.log(third);
+  uniq.push(first, second, third);
   firstimg.src = Catalog.arrays[first].source;
   // uniq.push(first);
   secondimg.src = Catalog.arrays[second].source;
@@ -97,7 +116,6 @@ let button;
 function handler(event) {
   counter++;
 
-  uniq.push(first, second, third);
   // }
   console.log(uniq);
   if (counter <= attemptmax) {
@@ -118,24 +136,6 @@ function handler(event) {
     //   if (i < 0) {
     //     i = 0;
     //   }
-
-    while (
-      uniq[length - 3] === first ||
-      uniq[length - 2] === first ||
-      uniq[length - 1] === first ||
-      uniq[length - 3] === second ||
-      uniq[length - 2] === second ||
-      uniq[length - 1] === second ||
-      uniq[length - 3] === third ||
-      uniq[length - 2] === third ||
-      uniq[length - 1] === third
-    ) {
-      console.log("befor", first, second, third);
-      first = generaterandomnumber();
-      second = generaterandomnumber();
-      third = generaterandomnumber();
-      uniq.push(first, second, third);
-    }
 
     renderthreeimages();
   } else {
