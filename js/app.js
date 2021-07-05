@@ -96,32 +96,7 @@ section.addEventListener("click", handler);
 let button;
 function handler(event) {
   counter++;
-  if (
-    uniq[length - 3] === first ||
-    uniq[length - 2] === first ||
-    uniq[length - 1] === first
-  ) {
-    // console.log("before", first);
-    first = generaterandomnumber();
-  }
-  // uniq.push(first);
-  if (
-    uniq[length - 3] === second ||
-    uniq[length - 2] === second ||
-    uniq[length - 1] === second
-  ) {
-    // console.log("befoe", second);
-    second = generaterandomnumber();
-  }
-  // uniq.push(second);
-  if (
-    uniq[length - 3] === third ||
-    uniq[length - 2] === third ||
-    uniq[length - 1] === third
-  ) {
-    // console.log("before", third);
-    third = generaterandomnumber();
-  }
+
   uniq.push(first, second, third);
   // }
   console.log(uniq);
@@ -143,6 +118,24 @@ function handler(event) {
     //   if (i < 0) {
     //     i = 0;
     //   }
+
+    while (
+      uniq[length - 3] === first ||
+      uniq[length - 2] === first ||
+      uniq[length - 1] === first ||
+      uniq[length - 3] === second ||
+      uniq[length - 2] === second ||
+      uniq[length - 1] === second ||
+      uniq[length - 3] === third ||
+      uniq[length - 2] === third ||
+      uniq[length - 1] === third
+    ) {
+      console.log("befor", first, second, third);
+      first = generaterandomnumber();
+      second = generaterandomnumber();
+      third = generaterandomnumber();
+      uniq.push(first, second, third);
+    }
 
     renderthreeimages();
   } else {
