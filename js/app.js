@@ -23,6 +23,9 @@ let arrOfShown = [];
 let counter = 0;
 Catalog.arrays = [];
 
+let numberOfShown = "";
+let numberOfVotes = "";
+
 function Catalog(name, source) {
   this.name = name;
   this.source = source;
@@ -31,6 +34,9 @@ function Catalog(name, source) {
   Catalog.arrays.push(this);
   // console.log(this);
   arrOfNames.push(this.name);
+  arrOfVotes.push(this.votes);
+  arrOfShown.push(this.shown);
+  votesShown();
 }
 
 new Catalog("bag", "img/bag.jpg"); //0
@@ -52,6 +58,7 @@ new Catalog("unicorn", "img/unicorn.jpg"); //15
 new Catalog("water-can", "img/water-can.jpg"); //16
 new Catalog("wine-glass", "img/wine-glass.jpg"); //17
 new Catalog("pet-sweep", "img/pet-sweep.jpg"); //18
+// console.log(Catalog.arrays);
 
 function generaterandomnumber() {
   return Math.floor(Math.random() * Catalog.arrays.length);
@@ -61,46 +68,47 @@ let first;
 let second;
 let third;
 
+//instead of include
+
+function check(second, uniq) {
+  for (let i = 0; i <= uniq.length; i++) {
+    if (second === uniq[i]) {
+      return true;
+    }
+  }
+  return false;
+}
+
 function renderthreeimages() {
   first = generaterandomnumber();
   second = generaterandomnumber();
   third = generaterandomnumber();
 
-  while (first === second || first === third || second === third) {
-    if (first === second || first === third) {
-      first = generaterandomnumber();
-    } else if (second === third) {
-      second = generaterandomnumber();
-    }
-  }
+  // console.log("before", uniq);
   while (
-    uniq[length - 3] === first ||
-    uniq[length - 2] === first ||
-    uniq[length - 1] === first ||
-    uniq[length - 3] === second ||
-    uniq[length - 2] === second ||
-    uniq[length - 1] === second ||
-    uniq[length - 3] === third ||
-    uniq[length - 2] === third ||
-    uniq[length - 1] === third
+    first === second ||
+    first === third ||
+    second === third ||
+    uniq.includes(first) ||
+    check(second, uniq) ||
+    uniq.includes(third)
   ) {
-    // console.log("befor", first, second, third);
+    // console.log("edit", first, second, third);
     first = generaterandomnumber();
     second = generaterandomnumber();
     third = generaterandomnumber();
-    // uniq.push(first, second, third);
   }
 
+  uniq = [first, second, third];
+  // console.log(counter);
+
+  // console.log("after", uniq);
   // console.log(first);
   // console.log(second);
   // console.log(third);
-  uniq.push(first, second, third);
   firstimg.src = Catalog.arrays[first].source;
-  // uniq.push(first);
   secondimg.src = Catalog.arrays[second].source;
-  // uniq.push(second);
   thirdimg.src = Catalog.arrays[third].source;
-  // uniq.push(third);
 
   Catalog.arrays[first].shown++;
   Catalog.arrays[second].shown++;
@@ -117,7 +125,6 @@ function handler(event) {
   counter++;
 
   // }
-  console.log(uniq);
   if (counter <= attemptmax) {
     if (event.target.id === "first-img") {
       Catalog.arrays[first].votes++;
@@ -152,23 +159,42 @@ function handler(event) {
   }
 }
 
+function votesShown() {
+  let covertedArr1 = JSON.stringify(Catalog.arrays);
+  localStorage.setItem("votes", covertedArr1);
+  // let convertedArr2 = JSON.stringify(Catalog.arrays);
+  // localStorage.setItem("shown", convertedArr2);
+}
+
 function handelclick() {
-  let tableElement = document.getElementById("table");
+  let orderlist = document.getElementById("ul1");
+  let listOfvotes = document.createElement("li");
+  orderlist.appendChild(listOfvotes);
+  let listOfshown = document.createElement("li");
+  orderlist.appendChild(listOfshown);
+  let data1 = localStorage.getItem("votes");
+  let parsedImg1 = JSON.parse(data1);
+  // votes = parseInt(votes);
+  let data2 = localStorage.getItem("shown");
+  let parsedImg2 = JSON.parse(data2);
+  // shown = parseInt(shown);
   for (let i = 0; i < Catalog.arrays.length; i++) {
     arrOfVotes.push(Catalog.arrays[i].votes);
     arrOfShown.push(Catalog.arrays[i].shown);
-    let trelement = document.createElement("tr");
-    tableElement.appendChild(trelement);
-    trelement.textContent = `${Catalog.arrays[i].name} has this number of votes ${Catalog.arrays[i].votes} and shwon ${Catalog.arrays[i].shown} times `;
+    Catalog.numberOfVotes = parsedImg1;
+    Catalog.numberOfShown = parsedImg2;
+    listOfvotes.textContent = `${Catalog.arrays[i].name} has this number of votes ${Catalog.arrays[i].votes}`;
+    listOfshown.textContent = `${Catalog.arrays[i].name} shwon ${Catalog.arrays[i].shown} times `;
   }
   button.removeEventListener("click", handelclick);
   gettingchart();
 }
-
+console.log(arrOfVotes);
+console.log(arrOfShown);
 function gettingchart() {
-  var ctx = document.getElementById("myChart");
-  var myChart = new Chart(ctx, {
-    type: "bar",
+  let ctx = document.getElementById("myChart");
+  let myChart = new Chart(ctx, {
+    type: "pie",
     data: {
       labels: arrOfNames,
       datasets: [
@@ -225,3 +251,21 @@ function gettingchart() {
     },
   });
 }
+
+//7 / 6 / 2021;
+
+//the key  , the value
+// localStorage.setItem("the name", "ehab");
+// localStorage.age = "26";
+// //the key , the value
+// localStorage.setItem("the pass", 56789);
+// localStorage.name = "ehab";
+// console.log(localStorage.getItem("the pass"));
+// console.log(localStorage.getItem("name"));
+// console.log(localStorage.getItem("age"));
+// localStorage.removeItem("age");
+// localStorage.removeItem("the pass");
+// localStorage.removeItem("name");
+// remove the whole localStorage
+
+//localStorage.clear();
