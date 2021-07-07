@@ -22,7 +22,7 @@ let arrOfVotes = [];
 let arrOfShown = [];
 let counter = 0;
 Catalog.arrays = [];
-
+Catalog.theShownVotes = [];
 function Catalog(name, source) {
   this.name = name;
   this.source = source;
@@ -31,6 +31,8 @@ function Catalog(name, source) {
   Catalog.arrays.push(this);
   // console.log(this);
   arrOfNames.push(this.name);
+  Catalog.theShownVotes.push(this);
+  keep();
 }
 
 new Catalog("bag", "img/bag.jpg"); //0
@@ -53,6 +55,11 @@ new Catalog("water-can", "img/water-can.jpg"); //16
 new Catalog("wine-glass", "img/wine-glass.jpg"); //17
 new Catalog("pet-sweep", "img/pet-sweep.jpg"); //18
 
+function keep() {
+  let convertarr = JSON.stringify(Catalog.theShownVotes);
+  localStorage.setItem("sv", convertarr);
+}
+
 function generaterandomnumber() {
   return Math.floor(Math.random() * Catalog.arrays.length);
 }
@@ -61,36 +68,35 @@ let first;
 let second;
 let third;
 
+function check(second, uniq) {
+  for (let i = 0; i <= uniq.length; i++) {
+    if (second === uniq[i]) {
+      return true;
+    }
+  }
+  return false;
+}
+
 function renderthreeimages() {
   first = generaterandomnumber();
   second = generaterandomnumber();
   third = generaterandomnumber();
 
-  while (first === second || first === third || second === third) {
-    if (first === second || first === third) {
-      first = generaterandomnumber();
-    } else if (second === third) {
-      second = generaterandomnumber();
-    }
-  }
   while (
-    uniq[length - 3] === first ||
-    uniq[length - 2] === first ||
-    uniq[length - 1] === first ||
-    uniq[length - 3] === second ||
-    uniq[length - 2] === second ||
-    uniq[length - 1] === second ||
-    uniq[length - 3] === third ||
-    uniq[length - 2] === third ||
-    uniq[length - 1] === third
+    first === second ||
+    first === third ||
+    second === third ||
+    uniq.includes(first) ||
+    check(second, uniq) ||
+    uniq.includes(third)
   ) {
-    // console.log("befor", first, second, third);
+    // console.log("edit", first, second, third);
     first = generaterandomnumber();
     second = generaterandomnumber();
     third = generaterandomnumber();
-    // uniq.push(first, second, third);
   }
 
+  uniq = [first, second, third];
   // console.log(first);
   // console.log(second);
   // console.log(third);
@@ -117,7 +123,7 @@ function handler(event) {
   counter++;
 
   // }
-  console.log(uniq);
+  // console.log(uniq);
   if (counter <= attemptmax) {
     if (event.target.id === "first-img") {
       Catalog.arrays[first].votes++;
@@ -152,6 +158,15 @@ function handler(event) {
   }
 }
 
+function invokels() {
+  let data = localStorage.getItem("sv");
+  // console.log(data);
+  let parseddata = JSON.parse(data);
+  console.log(parseddata);
+  Catalog.theShownVotes = parseddata;
+  handelclick();
+}
+
 function handelclick() {
   let tableElement = document.getElementById("table");
   for (let i = 0; i < Catalog.arrays.length; i++) {
@@ -164,6 +179,8 @@ function handelclick() {
   button.removeEventListener("click", handelclick);
   gettingchart();
 }
+
+invokels();
 
 function gettingchart() {
   var ctx = document.getElementById("myChart");
