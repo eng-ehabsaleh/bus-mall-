@@ -19,7 +19,6 @@ let arrOfNames = [];
 let arrOfVotes = [];
 let arrOfShown = [];
 let counter = 0;
-Catalog.arrays = [];
 
 Catalog.theShownVotes = [];
 function Catalog(name, source) {
@@ -31,7 +30,7 @@ function Catalog(name, source) {
   // console.log(this);
   arrOfNames.push(this.name);
 }
-
+Catalog.arrays = [];
 new Catalog("bag", "img/bag.jpg"); //0
 new Catalog("banana", "img/banana.jpg"); //1
 new Catalog("bathroom", "img/bathroom.jpg"); //2
