@@ -1,9 +1,92 @@
 img {
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
   margin: 30px;
 }
-table {
-  border: 2px;
-  color: black;
+body {
+  margin: 0 auto;
+}
+
+h2 {
+  position: relative;
+  text-align: center;
+  font-size: x-large;
+  font-weight: bolder;
+  top: 20px;
+  background-color: bisque;
+}
+body main section {
+  position: absolute;
+  text-align: center;
+  background-color: blanchedalmond;
+  border-style: solid;
+  border-color: rgb(241, 225, 73);
+  border-width: 5px;
+  width: 60%;
+  top: 80px;
+  right: 0px;
+}
+#first-img {
+  border-style: solid;
+  border-color: rgb(241, 225, 73);
+  border-width: 5px;
+}
+#second-img {
+  border-style: solid;
+  border-color: rgb(241, 225, 73);
+  border-width: 5px;
+}
+#third-img {
+  border-style: solid;
+  border-color: rgb(241, 225, 73);
+  border-width: 5px;
+}
+#khabi {
+  position: absolute;
+  top: 80px;
+  width: 39%;
+  border-style: solid;
+  border-color: rgb(241, 225, 73);
+  border-width: 5px;
+  background-color: rgba(222, 240, 121, 0.877);
+}
+#table {
+  position: relative;
+  top: 325px;
+  width: 39%;
+  border-style: solid;
+  border-color: rgb(245, 222, 20);
+  border-width: 5px;
+  background-color: rgb(213, 243, 105);
+}
+
+#lorem {
+  position: absolute;
+  width: 60%;
+  top: 400px;
+  height: 275px;
+  right: 0px;
+  border-style: solid;
+  border-color: rgb(241, 225, 73);
+  border-width: 5px;
+}
+#empty {
+  position: absolute;
+  width: 60%;
+  top: 360px;
+  height: 30px;
+  right: 0px;
+  border-style: solid;
+  border-color: rgba(221, 224, 10, 0.61);
+  border-width: 5px;
+}
+footer {
+  position: relative;
+  background-color: bisque;
+  height: 50px;
+  text-align: center;
+  bottom: 78px;
+  border-style: solid;
+  border-color: rgb(241, 225, 73);
+  border-width: 5px;
 }

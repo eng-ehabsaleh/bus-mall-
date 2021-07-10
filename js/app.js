@@ -5,12 +5,10 @@ let firstimg = document.createElement("img");
 firstimg.id = "first-img";
 section.appendChild(firstimg);
 firstimg.setAttribute("src", "");
-
 let secondimg = document.createElement("img");
 secondimg.id = "second-img";
 section.appendChild(secondimg);
 secondimg.setAttribute("src", "");
-
 let thirdimg = document.createElement("img");
 thirdimg.id = "third-img";
 section.appendChild(thirdimg);
@@ -22,6 +20,7 @@ let arrOfVotes = [];
 let arrOfShown = [];
 let counter = 0;
 Catalog.arrays = [];
+
 Catalog.theShownVotes = [];
 function Catalog(name, source) {
   this.name = name;
@@ -31,8 +30,6 @@ function Catalog(name, source) {
   Catalog.arrays.push(this);
   // console.log(this);
   arrOfNames.push(this.name);
-  Catalog.theShownVotes.push(this);
-  keep();
 }
 
 new Catalog("bag", "img/bag.jpg"); //0
@@ -56,7 +53,7 @@ new Catalog("wine-glass", "img/wine-glass.jpg"); //17
 new Catalog("pet-sweep", "img/pet-sweep.jpg"); //18
 
 function keep() {
-  let convertarr = JSON.stringify(Catalog.theShownVotes);
+  let convertarr = JSON.stringify(Catalog.arrays);
   localStorage.setItem("sv", convertarr);
 }
 
@@ -67,6 +64,15 @@ function generaterandomnumber() {
 let first;
 let second;
 let third;
+
+function check(second, uniq) {
+  for (let i = 0; i <= uniq.length; i++) {
+    if (second === uniq[i]) {
+      return true;
+    }
+  }
+  return false;
+}
 
 function check(second, uniq) {
   for (let i = 0; i <= uniq.length; i++) {
@@ -90,10 +96,12 @@ function renderthreeimages() {
     check(second, uniq) ||
     uniq.includes(third)
   ) {
+    // console.log("befor", first, second, third);
     // console.log("edit", first, second, third);
     first = generaterandomnumber();
     second = generaterandomnumber();
     third = generaterandomnumber();
+    // uniq.push(first, second, third);
   }
 
   uniq = [first, second, third];
@@ -107,22 +115,22 @@ function renderthreeimages() {
   // uniq.push(second);
   thirdimg.src = Catalog.arrays[third].source;
   // uniq.push(third);
-
   Catalog.arrays[first].shown++;
   Catalog.arrays[second].shown++;
   Catalog.arrays[third].shown++;
   // console.log(Catalog.arrays[18]);
   // console.log(Catalog.arrays[12]);
 }
-
 renderthreeimages();
+let button = document.getElementById("btn");
 
 section.addEventListener("click", handler);
-let button;
+
 function handler(event) {
   counter++;
 
   // }
+  console.log(uniq);
   // console.log(uniq);
   if (counter <= attemptmax) {
     if (event.target.id === "first-img") {
@@ -137,25 +145,27 @@ function handler(event) {
     }
     // console.log(counter);
     // console.log(event.target.id);
-
     // for (let i = uniq.length - 3; i <= uniq.length; i++) {
     //   if (i < 0) {
     //     i = 0;
     //   }
-
     renderthreeimages();
   } else {
-    let khabi = document.getElementById("khabi");
-    let khabiimg = document.createElement("img");
-    khabi.appendChild(khabiimg);
-    khabiimg.src = "img/Imagem623.jpg";
-    button = document.createElement("button");
-    khabi.appendChild(button);
-    button.setAttribute("content", "test value");
-    button.textContent = "view result";
-    button.addEventListener("click", handelclick);
+    // let khabi = document.getElementById("khabi");
+    // let khabiimg = document.createElement("img");
+    // khabi.appendChild(khabiimg);
+    // khabiimg.src = "img/Imagem623.jpg";
     section.removeEventListener("click", handler);
+
+    button.addEventListener("click", show);
   }
+}
+
+function show() {
+  button.removeEventListener("click", show);
+  keep();
+  invokels();
+  gettingchart();
 }
 
 function invokels() {
@@ -163,7 +173,7 @@ function invokels() {
   // console.log(data);
   let parseddata = JSON.parse(data);
   console.log(parseddata);
-  Catalog.theShownVotes = parseddata;
+  Catalog.arrays = parseddata;
   handelclick();
 }
 
@@ -176,8 +186,7 @@ function handelclick() {
     tableElement.appendChild(trelement);
     trelement.textContent = `${Catalog.arrays[i].name} has this number of votes ${Catalog.arrays[i].votes} and shwon ${Catalog.arrays[i].shown} times `;
   }
-  button.removeEventListener("click", handelclick);
-  gettingchart();
+  // gettingchart();
 }
 
 invokels();
