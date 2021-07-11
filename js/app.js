@@ -50,7 +50,7 @@ new Catalog("unicorn", "img/unicorn.jpg"); //15
 new Catalog("water-can", "img/water-can.jpg"); //16
 new Catalog("wine-glass", "img/wine-glass.jpg"); //17
 new Catalog("pet-sweep", "img/pet-sweep.jpg"); //18
-
+// sending user choose to local storage
 function keep() {
   let convertarr = JSON.stringify(Catalog.arrays);
   localStorage.setItem("sv", convertarr);
@@ -63,7 +63,7 @@ function generaterandomnumber() {
 let first;
 let second;
 let third;
-
+// use a function to neglect the photos shown in the previous 3 images
 function check(second, uniq) {
   for (let i = 0; i <= uniq.length; i++) {
     if (second === uniq[i]) {
@@ -73,20 +73,20 @@ function check(second, uniq) {
   return false;
 }
 
-function check(second, uniq) {
-  for (let i = 0; i <= uniq.length; i++) {
-    if (second === uniq[i]) {
-      return true;
-    }
-  }
-  return false;
-}
+// function check(second, uniq) {
+//   for (let i = 0; i <= uniq.length; i++) {
+//     if (second === uniq[i]) {
+//       return true;
+//     }
+//   }
+//   return false;
+// }
 
 function renderthreeimages() {
   first = generaterandomnumber();
   second = generaterandomnumber();
   third = generaterandomnumber();
-
+  // make showr no images reabeted in the trial it self or the trial before
   while (
     first === second ||
     first === third ||
@@ -124,7 +124,7 @@ renderthreeimages();
 let button = document.getElementById("btn");
 
 section.addEventListener("click", handler);
-
+// saving user chooicies in an aray
 function handler(event) {
   counter++;
 
@@ -159,14 +159,14 @@ function handler(event) {
     button.addEventListener("click", show);
   }
 }
-
+// save last user choices to localstorage and take it back to main page and include it in the chart
 function show() {
   button.removeEventListener("click", show);
   keep();
   invokels();
   gettingchart();
 }
-
+// take back user chooices from local storage and conver it to an object
 function invokels() {
   let data = localStorage.getItem("sv");
   // console.log(data);
@@ -175,7 +175,7 @@ function invokels() {
   Catalog.arrays = parseddata;
   handelclick();
 }
-
+// increasing the votes and the shown for each user upon his chooices and the random images shown
 function handelclick() {
   let tableElement = document.getElementById("table");
   for (let i = 0; i < Catalog.arrays.length; i++) {
